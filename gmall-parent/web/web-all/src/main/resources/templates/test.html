@@ -1,0 +1,18 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<div th:text="${hello}">你们来吧</div><br/>-->
+没有标签能输出吗？<br/>
+[[${hello}]]<br/>
+循环标签：
+<table>
+    <tr th:each="p : ${persons}">
+        <td th:text="${p}">占位内容随便写或不写也行</td>
+    </tr>
+</table>
+</body>
+</html>

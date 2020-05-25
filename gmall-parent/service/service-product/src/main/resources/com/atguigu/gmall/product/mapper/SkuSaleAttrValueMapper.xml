@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.gmall.product.mapper.SkuSaleAttrValueMapper">
+
+
+<!--    //5:根据spuId查询销售组合与SkuId之间的对应   开发工程师  开荒  从无到有-->
+<!--    // 当你要查询的数据 没有对应的POJO或JavaBean对象  使用Map  无敌版JavaBean-->
+<!--    List<Map> getSkuValueIdsMap(Long spuId);-->
+    <select id="getSkuValueIdsMap" resultType="map">
+        select
+            GROUP_CONCAT(sale_attr_value_id order by  spv.base_sale_attr_id separator '|') value_ids,
+            sku_id
+        from sku_sale_attr_value skv
+        inner join spu_sale_attr_value spv on skv.sale_attr_value_id=spv.id
+        where skv.spu_id = #{spuId}
+        GROUP BY sku_id
+    </select>
+
+</mapper>

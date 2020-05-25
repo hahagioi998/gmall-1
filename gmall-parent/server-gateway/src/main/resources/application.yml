@@ -1,0 +1,49 @@
+server:
+  port: 80
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.128:8848
+    gateway:
+      discovery:      #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+        locator:      #路由访问方式：http://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。
+          enabled: true
+      routes:
+        - id: service-product
+          uri: lb://service-product
+          predicates:
+            - Path=/*/product/** # 路径匹配  要求：商品模块微服务开发 请求URL路径 必须包含/admin/product/**
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/*/user/**
+#######################上面是按照路径进行路由 上面都异步请求微服务############################################################################
+#######################下面是按照Host进行路由  下面都是刷新页面的请求###################################################
+        - id: web-item
+          uri: lb://web-all
+          predicates:
+            - Host=item.gmall.com
+        - id: web-index
+          uri: lb://web-all
+          predicates:
+            - Host=www.gmall.com
+        - id: web-list
+          uri: lb://web-all
+          predicates:
+            - Host=list.gmall.com
+        - id: web-login
+          uri: lb://web-all
+          predicates:
+            - Host=passport.gmall.com
+        - id: web-cart
+          uri: lb://web-all
+          predicates:
+            - Host=cart.gmall.com
+  redis:
+    host: 192.168.200.128
+    port: 6379
+auth:
+  url: trade.html,myOrder.html,pay.html
